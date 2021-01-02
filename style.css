@@ -1,0 +1,12 @@
+#textid {
+    color: white;
+    font-family: 'Courier New', Courier, monospace; 
+}
+
+#clock {
+    background-color: #262626;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 50px;
+    padding-block: 0px,20px;
+}
