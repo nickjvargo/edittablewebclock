@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBCLOCK</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color:#262626">
+    <h1 id="textid" style="color:white; font-family: 'Courier New', Courier, monospace;">EDITTABLE WEBCLOCK</h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="color:white; background-color: #262626; font-family: 'Courier New', Courier, monospace; font-size: 50px; padding-block: 0px 20px;" id="clock"></div>
+    <form onsubmit="setTime()" id="setTimeForm">
+        <label style="color:white; font-family: 'Courier New', Courier, monospace;">
+            Enter the time you would like it changed to in XX:XX:XX format:
+        </label> 
+        <br>
+        <input type="text" id="submittedTime" name="submittedTime" required pattern="\d\d:\d\d:\d\d">
+        <input type="submit" value="Submit" onclick="document.getElementById('submittedTime').innerHTML = ''">
+    </form>
+
+
+    <!-- javascript starts here -->
+    <script>
+
+        var date = new Date();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        var setTimeForm = document.getElementById("setTimeForm");
+
+        //places zero before number if less than two digits
+        function updateTime(k) {
+            if (k.toString().length < 2) {
+                return "0" + k.toString();
+            }
+            else {
+                return k;
+            }
+        }
+        
+        //stop refresh of page so that submitted value remains as time
+        setTimeForm.addEventListener("submit", stopRefresh);
+
+        function currentTime() {
+            hour = updateTime(hour);
+            minute = updateTime(minute);
+            second = updateTime(second);
+
+            //display
+            document.getElementById("clock").innerHTML = hour + ":" + 
+            minute + ":" + second;
+            
+            //'clock'  
+            if (second < 59) {
+                second++;
+            } else {
+                second = 0;
+                if (minute < 59) {
+                    minute++;
+                } else {
+                    minute = 0;
+                    if (hour < 23) {
+                        hour++;
+                    } else {
+                        hour = 0;
+                    }
+                }
+                
+            }
+
+            //run each second
+            var t = setTimeout(function(){ currentTime() }, 1000);
+        }
+
+        //call currrent time function
+        currentTime();
+
+        function setTime() {
+            //get submitted data from input
+            var formData = new FormData(setTimeForm);
+            var submittedTime = Array.from(formData)[0][1];
+            
+            //split by ':' and assign hour, minute, second values
+            submittedTime = submittedTime.split(":");
+            hour = submittedTime[0];
+            minute = submittedTime[1];
+            second = submittedTime[2];
+        }
+        
+        function stopRefresh(event) {
+            event.preventDefault();
+        }
+
+        </script>
+    <!-- javascript ends here -->
+
+</body>
+</html>
